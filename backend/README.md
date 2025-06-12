@@ -1,72 +1,54 @@
-# Hapi.js User Registration API
+# React + TypeScript + Vite
 
-A minimal API built with Hapi.js for user registration. This project demonstrates a basic setup using ES Modules, structured directories, and pnpm.
+This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-## Prerequisites
+Currently, two official plugins are available:
 
-* [Node.js](https://nodejs.org/) (v18.x or newer recommended for native `--watch` and good ES Module support)
-* [pnpm](https://pnpm.io/) (Package manager)
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
 
-## Installation
+## Expanding the ESLint configuration
 
-1.  **Clone the repository (if applicable):**
-    ```bash
-    git clone <your-repository-url>
-    cd <your-project-directory>
-    ```
+If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
 
-2.  **Install dependencies:**
-    ```bash
-    pnpm install
-    ```
+```js
+export default tseslint.config({
+  extends: [
+    // Remove ...tseslint.configs.recommended and replace with this
+    ...tseslint.configs.recommendedTypeChecked,
+    // Alternatively, use this for stricter rules
+    ...tseslint.configs.strictTypeChecked,
+    // Optionally, add this for stylistic rules
+    ...tseslint.configs.stylisticTypeChecked,
+  ],
+  languageOptions: {
+    // other options...
+    parserOptions: {
+      project: ['./tsconfig.node.json', './tsconfig.app.json'],
+      tsconfigRootDir: import.meta.dirname,
+    },
+  },
+})
+```
 
-3.  **Set up environment variables:**
-    * Copy the example environment file:
-        ```bash
-        cp .env.example .env
-        ```
-    * Review and update the variables in `.env` as needed (e.g., `PORT`).
+You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
 
-## Running the Application
+```js
+// eslint.config.js
+import reactX from 'eslint-plugin-react-x'
+import reactDom from 'eslint-plugin-react-dom'
 
-* **Development Mode (with file watching):**
-    Requires Node.js v18.11+
-    ```bash
-    pnpm run dev
-    ```
-    This will start the server, typically on `http://localhost:3000` (or the port specified in your `.env` file), and automatically restart on file changes.
-
-* **Production Mode (or simple start):**
-    ```bash
-    pnpm start
-    ```
-    This starts the server using `node src/index.js`.
-
-## API Endpoints
-
-* **POST** `/api/v1/users/register`
-    * Registers a new user.
-    * **Payload:**
-        ```json
-        {
-          "username": "testuser",
-          "email": "test@example.com",
-          "password": "password123"
-        }
-        ```
-
-* **GET** `/`
-    * Basic health check / API info endpoint.
-
-## Project Structure
-
-The project follows a feature-based directory structure:
-
-src/
-├── api/
-│   └── users/         # User feature (routes, handlers, validation)
-├── config/            # Application configuration
-├── lib/               # Shared utility functions
-├── plugins/           # Custom Hapi plugins (if any)
-├── services/          # Business logic
-└── index.js           # Server entry point
+export default tseslint.config({
+  plugins: {
+    // Add the react-x and react-dom plugins
+    'react-x': reactX,
+    'react-dom': reactDom,
+  },
+  rules: {
+    // other rules...
+    // Enable its recommended typescript rules
+    ...reactX.configs['recommended-typescript'].rules,
+    ...reactDom.configs.recommended.rules,
+  },
+})
+```
