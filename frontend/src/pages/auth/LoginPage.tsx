@@ -17,7 +17,7 @@ import { useAuth } from "@/hooks/useAuth";
 // Zod schema for form validation
 const formSchema = z.object({
   email: z.string().email({ message: "Please enter a valid email address." }),
-  password: z.string().min(6, { message: "Password must be at least 6 characters." }),
+  password: z.string().min(8, { message: "Password must be at least 8 characters." }),
 });
 
 const LoginPage = () => {
